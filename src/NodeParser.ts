@@ -55,7 +55,7 @@ export default class NodeParser {
         const curDepth = tokens[0].depth;
 
         const curDepthTokens = tokens.filter(v => v.depth === curDepth);
-        this.checkIsElementNameSame(curDepthTokens);
+        this.checkIsValidElement(curDepthTokens);
         const filteredCurDepthTokens = curDepthTokens.filter(v => v.tokenName !== TOKEN_NAME.END_TAG);
         
         filteredCurDepthTokens.forEach(v => {
@@ -71,8 +71,7 @@ export default class NodeParser {
     */
     private parseNode(token: ICommonToken): IEachNode | IEachElement {
         if (token.tokenName === TOKEN_NAME.TEXT) {
-            return this.parseEachNode(token);
-            
+            return this.parseEachNode(token);   
         }
 
         return this.parseEachElement(token);
@@ -156,7 +155,7 @@ export default class NodeParser {
      * =====================================================
      * 시작 태그 이름과 종료 태그 이름이 동일한지 확인하고 아니라면 에러를 내는 메서드
     */
-    private checkIsElementNameSame(curDepthTokens: Array<ICommonToken>): void {
+    private checkIsValidElement(curDepthTokens: Array<ICommonToken>): void {
         for (let i = 0; i < curDepthTokens.length; i++) {
             if (curDepthTokens[i].tokenName === TOKEN_NAME.START_TAG) {
                 if (curDepthTokens[i].tagName !== curDepthTokens[i + 1].tagName) {
